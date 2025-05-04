@@ -2,11 +2,11 @@ body{
     background-color: #250e0e;
     font-family: Arial, sans-serif;
     margin: 40px;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
+    font-size: 3x;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    color: #333;
-
+color: red;
 }
 i{
     color: rgb(251, 251, 251);
@@ -32,3 +32,22 @@ h1{
     font-size: 36px;
     margin-bottom: 20px; /* Add space below the heading */
 }
+th{
+    color: #130303;
+    font-size:20px ; 
+    color:rgb(234, 255, 0);
+    text-shadow: 10px 10px 10px #000;
+}
+#exciting {
+    background: linear-gradient(to bottom, #0b0907, #f69d3c);
+    border: 1px solid #696969;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px black;
+  }
+  
+  #exciting:before {
+    content: "ℹ️";
+    margin-right: 5px;
+  }
+  
