@@ -49,5 +49,6 @@ th{
   #exciting:before {
     content: "ℹ️";
     margin-right: 5px;
+    box-shadow: 10px 10px 10px #43a701;
   }
   
