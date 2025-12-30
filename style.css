@@ -11,6 +11,8 @@ color: red;
 i{
     color: rgb(251, 251, 251);
     font-size: 20px;
+
+
 }
 li{
     color: rgb(237, 226, 226);
@@ -26,11 +28,14 @@ h2{
 b{
     color: greenyellow;
     text-shadow: -1px 10px 10px black;
+    font-size: 20px;
+
 }
 h1{
     color: #fff;
     font-size: 36px;
     margin-bottom: 20px; /* Add space below the heading */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 th{
     color: #130303;
@@ -51,4 +56,15 @@ th{
     margin-right: 5px;
     box-shadow: 10px 10px 10px #43a701;
   }
+    #exciting p {
+        margin: 0;
+        color: #fff;
+        font-weight: bold;
+    }
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+        margin: 20px 0;
+    }
   
