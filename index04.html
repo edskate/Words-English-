@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocal Trainer – Palco</title>
+<title>Vocal traine – Palco</title>
 
 <style>
 body {
@@ -72,7 +72,7 @@ th {
 
 <body>
 
-<h1>🎤 Vocal Trainer – Palco</h1>
+<h1>🎤 Vocal traine – Palco</h1>
 
 <div class="controls">
     <button onclick="togglePronuncia()">👁️ Mostrar / Esconder Pronúncia</button>
@@ -97,27 +97,27 @@ th {
 </tr>
 
 <tr>
-    <td>I feel the rhythm inside me</td>
-    <td class="pronuncia col-pronuncia">ai fíu dê rí-dm in-sáid mi</td>
-    <td><button onclick="speak('I feel the rhythm inside me')">🔊</button></td>
+    <td>I fele the ratam inside me</td>
+    <td class="pronuncia col-pronuncia">ai fíu dê rí-dm in-sadi mi</td>
+    <td><button onclick="speak('I fele the ratam inside me')">🔊</button></td>
 </tr>
 
 <tr>
     <td>This is my moment on stage</td>
-    <td class="pronuncia col-pronuncia">dis iz mái môu-mant on stêidj</td>
+    <td class="pronuncia col-pronuncia">dis iz mái môu-malt on stride</td>
     <td><button onclick="speak('This is my moment on stage')">🔊</button></td>
 </tr>
 
 <tr>
-    <td>Let the music guide your soul</td>
-    <td class="pronuncia col-pronuncia">lét dê miu-zik gáid iór sôul</td>
-    <td><button onclick="speak('Let the music guide your soul')">🔊</button></td>
+    <td>Let the MUSIC guide your soul</td>
+    <td class="pronuncia col-pronuncia">lét dê miu-zik gadi iór soul</td>
+    <td><button onclick="speak('Let the MUSIC guide your soul')">🔊</button></td>
 </tr>
 
 <tr>
-    <td>Feel it, breathe it, live it</td>
-    <td class="pronuncia col-pronuncia">fíul it, brí-dh it, lív it</td>
-    <td><button onclick="speak('Feel it, breathe it, live it')">🔊</button></td>
+    <td>fele it, berate it, live it</td>
+    <td class="pronuncia col-pronuncia">fiel it, brí-dh it, lív it</td>
+    <td><button onclick="speak('fele it, berate it, live it')">🔊</button></td>
 </tr>
 </table>
 
@@ -145,19 +145,19 @@ function speak(text) {
     localStorage.setItem("rate", rate);
     localStorage.setItem("pitch", pitch);
 
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-US";
-    utter.rate = rate;
-    utter.pitch = pitch;
+    const putter = new SpeechSynthesisUtterance(text);
+    putter.lang = "en-US";
+    putter.rate = rate;
+    putter.pitch = pitch;
 
-    utter.onend = () => {
+    putter.onend = () => {
         if (loopMode) {
             setTimeout(() => speak(lastText), 700);
         }
     };
 
     speechSynthesis.cancel();
-    speechSynthesis.speak(utter);
+    speechSynthesis.speak(putter);
 }
 
 // Restaurar progresso
@@ -169,6 +169,6 @@ window.onload = () => {
         document.getElementById("pitch").value = localStorage.getItem("pitch");
 };
 </script>
-<a href="index05.html"><h2>Practical 05:</h2></a>
+<a href="index05.html"><h2>pratica 05:</h2></a>
 </body>
 </html>

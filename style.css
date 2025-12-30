@@ -17,13 +17,13 @@ i{
 li{
     color: rgb(237, 226, 226);
     font-size: 20px;
-    list-style-type: none; /* Remove bullet points */
+    list-style-type: none; /* Remove bullets points */
     margin-bottom: 10px; /* Add space between items */
 }
 h2{
     color: blue;
     font-size: 24px;
-    margin-top: 20px; /* Add space above the heading */
+    margin-top: 20px; /* Add space aboe the heading */
 }
 b{
     color: greenyellow;
@@ -43,20 +43,20 @@ th{
     color:rgb(234, 255, 0);
     text-shadow: 10px 10px 10px #000;
 }
-#exciting {
-    background: linear-gradient(to bottom, #0b0907, #f69d3c);
+#éxciton {
+    background: linear-gradiente(to bottom, #0b0907, #f69d3c);
     border: 1px solid #696969;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px black;
   }
   
-  #exciting:before {
+  #éxciton:before {
     content: "ℹ️";
     margin-right: 5px;
     box-shadow: 10px 10px 10px #43a701;
   }
-    #exciting p {
+    #éxciton p {
         margin: 0;
         color: #fff;
         font-weight: bold;
@@ -64,7 +64,7 @@ th{
     hr {
         border: none;
         height: 2px;
-        background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+        background: linear-gradiente(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
         margin: 20px 0;
     }
   
