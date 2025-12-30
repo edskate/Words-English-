@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Caderno de Inglês para Show • Frases de Palco</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --line:#2a3140;
+    --text:#e9eef6; --muted:#a9b4c4; --accent:#2a7cff; --pron:#ff4d4d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:Arial,sans-serif; background:linear-gradient(180deg,#0f1115,#0b0d12); color:var(--text); padding:16px;}
+  .wrap{max-width:1050px; margin:0 auto;}
+  header{display:flex; gap:12px; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:12px;}
+  h1{margin:0; font-size:20px;}
+  .muted{color:var(--muted); font-size:13px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.25);}
+
+  .topbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:space-between;}
+  .btns{display:flex; gap:8px; flex-wrap:wrap;}
+  button{border:none; border-radius:12px; padding:10px 12px; font-weight:bold; cursor:pointer; color:#fff; background:var(--accent);}
+  button.secondary{background:#2a3140}
+  button.danger{background:#ff5c5c}
+  .pill{padding:8px 10px; border-radius:999px; border:1px solid var(--line); background:#0f131c; color:var(--text); font-size:13px;}
+
+  .table{width:100%; border-collapse:separate; border-spacing:0 10px; margin-top:10px;}
+  .row{background:#0f131c; border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+  .row td{padding:12px; vertical-align:top;}
+  .title{font-weight:bold; margin-bottom:6px;}
+  .pron{color:var(--pron); font-weight:bold;}
+  .hidden{display:none;}
+  .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px;}
+  .ctrl{flex:1; min-width:180px; background:#0b0f17; border:1px solid var(--line); border-radius:12px; padding:10px;}
+  .ctrl label{display:flex; justify-content:space-between; color:var(--muted); font-size:12px;}
+  input[type="range"]{width:100%;}
+  .mini{font-size:11px; color:var(--muted); margin-top:6px;}
+  .actions{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .tog{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .chk{transform:translateY(2px) scale(1.15);}
+  @media(max-width:800px){ .ctrl{min-width:140px} }
+  @media print{
+    body{background:#fff;color:#000}
+    .card{box-shadow:none; background:#fff; border:1px solid #ddd}
+    button,.pill,.mini{display:none}
+    .pron{color:#b00000}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>🎤 Caderno de Inglês para Show • Frases de Palco</h1>
+      <div class="muted">Treino com voz nativa + pronúncia • Rate/Pitch por frase • Loop automático • Salva automático.</div>
+    </div>
+    <div class="pill" id="clock">--:--:--</div>
+  </header>
+
+  <section class="card">
+    <div class="topbar">
+      <div class="tog">
+        <label class="pill" style="display:flex; gap:8px; align-items:center;">
+          <input class="chk" type="checkbox" id="togglePron" checked />
+          👁️ Pronúncia ON/OFF
+        </label>
+
+        <label class="pill" style="display:flex; gap:8px; align-items:center;">
+          <input class="chk" type="checkbox" id="globalLoop" />
+          🎧 Loop global (repete a última frase)
+        </label>
+
+        <span class="pill">🎵 Somente frases de palco</span>
+      </div>
+
+      <div class="btns">
+        <button class="secondary" onclick="window.print()">📘 PDF (Imprimir)</button>
+        <button class="danger" onclick="resetAll()">🧹 Reset</button>
+      </div>
+    </div>
+
+    <table class="table" id="tbl"></table>
+
+    <div class="mini">Dica: clique 🔊, repita 3x lento, depois 3x no ritmo de palco.</div>
+  </section>
+</div>
+
+<script>
+  const LS = "edy_show_english_v2";
+
+  // Frases originais estilo palco (sem letras oficiais)
+  const PHRASES = [
+    { id:"p1", text:"Hello, good evening!", pron:"rê-lôu, gúd í-vi-nin" },
+    { id:"p2", text:"Welcome, everyone!", pron:"uél-cam, é-vri-uãn" },
+    { id:"p3", text:"Thank you for being here tonight.", pron:"thénk iu for bí-in hír to-náit" },
+    { id:"p4", text:"Let’s start the show!", pron:"lêts stárt dê shôu" },
+    { id:"p5", text:"Make some noise for the band!", pron:"mêik sâm nôiz for dê bênd" },
+    { id:"p6", text:"Put your hands together!", pron:"pút iór réndz tê-gé-dher" },
+    { id:"p7", text:"Are you ready?", pron:"ar iu ré-di" },
+    { id:"p8", text:"This one is for you!", pron:"dhis uãn iz for iu" },
+    { id:"p9", text:"Sing with me!", pron:"sing uíth mi" },
+    { id:"p10", text:"One more time!", pron:"uãn mór táim" },
+    { id:"p11", text:"Thank you, you were amazing!", pron:"thénk iu, iu uâr ê-mêi-zing" },
+    { id:"p12", text:"Good night, see you next time!", pron:"gúd náit, sí iu nékst táim" },
+  ];
+
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(LS)) || {}; }
+    catch { return {}; }
+  }
+  function saveState(s){ localStorage.setItem(LS, JSON.stringify(s)); }
+
+  let state = loadState();
+  let lastSpokenId = state.lastSpokenId || null;
+
+  function ensureDefaults(id){
+    if(!state[id]) state[id] = {};
+    if(state[id].rate == null) state[id].rate = 0.85;
+    if(state[id].pitch == null) state[id].pitch = 1.10;
+    if(state[id].loop == null) state[id].loop = false;
+  }
+
+  function speakPhrase(p){
+    ensureDefaults(p.id);
+    lastSpokenId = p.id;
+    state.lastSpokenId = p.id;
+    saveState(state);
+
+    const rate = parseFloat(state[p.id].rate);
+    const pitch = parseFloat(state[p.id].pitch);
+
+    const u = new SpeechSynthesisUtterance(p.text);
+    u.lang = "en-US";
+    u.rate = rate;
+    u.pitch = pitch;
+
+    u.onend = () => {
+      const globalLoop = document.getElementById("globalLoop").checked;
+      const localLoop = !!state[p.id].loop;
+      if(globalLoop || localLoop){
+        setTimeout(() => speakPhrase(p), 700);
+      }
+    };
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+
+  function render(){
+    const tbl = document.getElementById("tbl");
+    tbl.innerHTML = "";
+
+    const showPron = document.getElementById("togglePron").checked;
+
+    PHRASES.forEach(p=>{
+      ensureDefaults(p.id);
+
+      const tr = document.createElement("tr");
+      tr.className = "row";
+
+      const td1 = document.createElement("td");
+      td1.style.width = "44%";
+      td1.innerHTML = `
+        <div class="title">${p.text}</div>
+        <div class="pron ${showPron ? "" : "hidden"}" data-pron>${p.pron}</div>
+      `;
+
+      const td2 = document.createElement("td");
+      td2.style.width = "56%";
+
+      // controls
+      const rateId = `rate_${p.id}`;
+      const pitchId = `pitch_${p.id}`;
+      const loopId = `loop_${p.id}`;
+
+      td2.innerHTML = `
+        <div class="actions">
+          <button onclick="window.__speak('${p.id}')">🔊 Falar</button>
+
+          <label class="pill" style="display:flex; gap:8px; align-items:center;">
+            <input class="chk" type="checkbox" id="${loopId}">
+            🎧 Loop desta frase
+          </label>
+
+          <span class="pill">Última: ${lastSpokenId === p.id ? "✅" : "—"}</span>
+        </div>
+
+        <div class="controls">
+          <div class="ctrl">
+            <label><span>🎚️ Rate</span><span id="rval_${p.id}">${state[p.id].rate}</span></label>
+            <input type="range" min="0.5" max="1.2" step="0.05" id="${rateId}">
+          </div>
+          <div class="ctrl">
+            <label><span>🎚️ Pitch</span><span id="pval_${p.id}">${state[p.id].pitch}</span></label>
+            <input type="range" min="0.8" max="1.4" step="0.05" id="${pitchId}">
+          </div>
+        </div>
+      `;
+
+      tbl.appendChild(tr);
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+
+      // bind values
+      const rateEl = document.getElementById(rateId);
+      const pitchEl = document.getElementById(pitchId);
+      const loopEl = document.getElementById(loopId);
+
+      rateEl.value = state[p.id].rate;
+      pitchEl.value = state[p.id].pitch;
+      loopEl.checked = !!state[p.id].loop;
+
+      rateEl.addEventListener("input", e=>{
+        state[p.id].rate = parseFloat(e.target.value).toFixed(2);
+        document.getElementById(`rval_${p.id}`).textContent = state[p.id].rate;
+        saveState(state);
+      });
+
+      pitchEl.addEventListener("input", e=>{
+        state[p.id].pitch = parseFloat(e.target.value).toFixed(2);
+        document.getElementById(`pval_${p.id}`).textContent = state[p.id].pitch;
+        saveState(state);
+      });
+
+      loopEl.addEventListener("change", e=>{
+        state[p.id].loop = e.target.checked;
+        saveState(state);
+      });
+    });
+
+    // show/hide pron on re-render
+    document.querySelectorAll("[data-pron]").forEach(el=>{
+      el.classList.toggle("hidden", !showPron);
+    });
+  }
+
+  // expose speak by id
+  window.__speak = (id)=>{
+    const p = PHRASES.find(x=>x.id===id);
+    if(p) speakPhrase(p);
+    render(); // atualiza o "Última: ✅"
+  };
+
+  function resetAll(){
+    if(!confirm("Resetar configurações e loops?")) return;
+    localStorage.removeItem(LS);
+    state = loadState();
+    lastSpokenId = null;
+    speechSynthesis.cancel();
+    document.getElementById("globalLoop").checked = false;
+    document.getElementById("togglePron").checked = true;
+    render();
+  }
+
+  // clock
+  function tick(){
+    const n = new Date();
+    const hh = String(n.getHours()).padStart(2,"0");
+    const mm = String(n.getMinutes()).padStart(2,"0");
+    const ss = String(n.getSeconds()).padStart(2,"0");
+    document.getElementById("clock").textContent = `${hh}:${mm}:${ss}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  // init
+  document.getElementById("togglePron").addEventListener("change", render);
+  render();
+</script>
+</body>
+</html>

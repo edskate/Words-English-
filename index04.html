@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocal Trainer – Palco</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    padding: 15px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.controls, .voice-controls {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type=range] {
+    width: 100%;
+}
+
+button {
+    padding: 8px 12px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+th {
+    background: #111;
+    color: #fff;
+}
+
+.pronuncia {
+    color: #b00000;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    th, td {
+        font-size: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎤 Vocal Trainer – Palco</h1>
+
+<div class="controls">
+    <button onclick="togglePronuncia()">👁️ Mostrar / Esconder Pronúncia</button>
+    <button onclick="window.print()">📘 Exportar PDF (Caderno Vocal)</button>
+</div>
+
+<div class="voice-controls">
+    <label>🎚️ Velocidade (Rate)</label>
+    <input type="range" min="0.5" max="1.2" step="0.1" id="rate" value="0.8">
+
+    <label>🎚️ Tom (Pitch)</label>
+    <input type="range" min="0.8" max="1.4" step="0.1" id="pitch" value="1.1">
+
+    <button onclick="toggleLoop()">🎧 Repetição Automática</button>
+</div>
+
+<table>
+<tr>
+    <th>Frase de Treino</th>
+    <th class="col-pronuncia">Pronúncia</th>
+    <th>🎤</th>
+</tr>
+
+<tr>
+    <td>I feel the rhythm inside me</td>
+    <td class="pronuncia col-pronuncia">ai fíu dê rí-dm in-sáid mi</td>
+    <td><button onclick="speak('I feel the rhythm inside me')">🔊</button></td>
+</tr>
+
+<tr>
+    <td>This is my moment on stage</td>
+    <td class="pronuncia col-pronuncia">dis iz mái môu-mant on stêidj</td>
+    <td><button onclick="speak('This is my moment on stage')">🔊</button></td>
+</tr>
+
+<tr>
+    <td>Let the music guide your soul</td>
+    <td class="pronuncia col-pronuncia">lét dê miu-zik gáid iór sôul</td>
+    <td><button onclick="speak('Let the music guide your soul')">🔊</button></td>
+</tr>
+
+<tr>
+    <td>Feel it, breathe it, live it</td>
+    <td class="pronuncia col-pronuncia">fíul it, brí-dh it, lív it</td>
+    <td><button onclick="speak('Feel it, breathe it, live it')">🔊</button></td>
+</tr>
+</table>
+
+<script>
+let showPronuncia = true;
+let loopMode = false;
+let lastText = "";
+
+function togglePronuncia() {
+    showPronuncia = !showPronuncia;
+    document.querySelectorAll('.col-pronuncia')
+        .forEach(el => el.classList.toggle('hidden'));
+}
+
+function toggleLoop() {
+    loopMode = !loopMode;
+    alert(loopMode ? "🎧 Loop ativado" : "⏹️ Loop desativado");
+}
+
+function speak(text) {
+    lastText = text;
+    const rate = document.getElementById("rate").value;
+    const pitch = document.getElementById("pitch").value;
+
+    localStorage.setItem("rate", rate);
+    localStorage.setItem("pitch", pitch);
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.rate = rate;
+    utter.pitch = pitch;
+
+    utter.onend = () => {
+        if (loopMode) {
+            setTimeout(() => speak(lastText), 700);
+        }
+    };
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+}
+
+// Restaurar progresso
+window.onload = () => {
+    if (localStorage.getItem("rate"))
+        document.getElementById("rate").value = localStorage.getItem("rate");
+
+    if (localStorage.getItem("pitch"))
+        document.getElementById("pitch").value = localStorage.getItem("pitch");
+};
+</script>
+<a href="index05.html">Pronunciation pratic</a>
+</body>
+</html>
