@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Fluxo Pocket Show</title>
+
+  <!-- Mermaid -->
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "dark" });
+  </script>
+
+  <style>
+    body {
+      background: #0b0f14;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="mermaid">
+flowchart TD
+    A[Chegada ao Local] --> B[Organizar Figurinos]
+    B --> C[Passagem de Som]
+    C --> D[Alongamento]
+    D --> E[Ensaio Rápido]
+    E --> F[Início do Show]
+    F --> G[Execução das Músicas]
+    G --> H[Finalização / Agradecimentos]
+    H --> I[Guardar Figurinos]
+    I --> J[Fazer checklist de figurinos]
+    j --> K[Fim do Pocket/ Show]
+</div>
+
+</body>
+</html>
