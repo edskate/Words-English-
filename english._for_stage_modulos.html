@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>English for Stage PRO - EdyMichaelCover</title>
+<title>English for Stage Módulos - EdyMichaelCover</title>
 <style>
 *{box-sizing:border-box}
 
@@ -29,7 +29,7 @@ body{
 }
 
 .app{
-  max-width:1100px;
+  max-width:1180px;
   margin:0 auto;
 }
 
@@ -121,11 +121,11 @@ body{
   font-weight:bold;
 }
 
-input[type="range"], input[type="number"]{
+input[type="range"], input[type="number"], select{
   width:100%;
 }
 
-input[type="number"]{
+input[type="number"], select{
   background:#050505;
   color:#fff;
   border:1px solid #55471d;
@@ -319,8 +319,8 @@ button:hover{
 <body>
 <div class="app">
   <div class="hero">
-    <h1>🎤 English for Stage PRO — EdyMichaelCover</h1>
-    <p>Treino de palco • pronúncia • velocímetro • ranking • estudo profissional</p>
+    <h1>🎤 English for Stage — EdyMichaelCover</h1>
+    <p>Módulos profissionais de inglês para palco • pronúncia • treino • performance</p>
   </div>
 
   <div class="grid">
@@ -328,7 +328,7 @@ button:hover{
       <h2>Frase atual</h2>
 
       <div class="phrase-box">
-        <div class="counter" id="counter">Frase 1 de 50</div>
+        <div class="counter" id="counter">Frase 1 de 10</div>
         <div id="english"></div>
         <div id="portuguese"></div>
 
@@ -342,6 +342,11 @@ button:hover{
 
       <div class="toolbar">
         <div class="field">
+          <label for="moduleSelect">Módulo</label>
+          <select id="moduleSelect"></select>
+        </div>
+
+        <div class="field">
           <label for="rate">Velocidade da voz</label>
           <div class="range-row">
             <input type="range" id="rate" min="0.5" max="1.8" step="0.1" value="0.95">
@@ -352,6 +357,11 @@ button:hover{
         <div class="field">
           <label for="autoDelay">Pausa no treino automático (segundos)</label>
           <input type="number" id="autoDelay" min="1" max="10" value="2">
+        </div>
+
+        <div class="field">
+          <label for="bestScore">Melhor pontuação</label>
+          <div id="bestScore">Melhor pontuação: --%</div>
         </div>
       </div>
 
@@ -373,8 +383,6 @@ button:hover{
         <canvas id="speedometer" width="260" height="150"></canvas>
 
         <div id="score">Pronúncia: --%</div>
-        <div id="bestScore">Melhor pontuação: --%</div>
-
         <div id="feedback">Correção palavra por palavra: —</div>
       </div>
 
@@ -382,75 +390,88 @@ button:hover{
     </section>
 
     <aside class="card">
-      <h2>Lista de frases</h2>
+      <h2>Lista do módulo</h2>
       <div class="list" id="list"></div>
     </aside>
   </div>
 </div>
 
 <script>
-const phrases = [
-  ["Let's rehearse from the top.","Vamos ensaiar do começo."],
-  ["Please check your timing.","Por favor, confiram o tempo."],
-  ["We need more precision.","Precisamos de mais precisão."],
-  ["Stay focused.","Permaneçam focados."],
-  ["Let's clean this part.","Vamos limpar esta parte."],
-  ["Watch the formation.","Observem a formação."],
-  ["Keep the line straight.","Mantenham a linha reta."],
-  ["Listen to the count.","Escutem a contagem."],
-  ["Enter on the beat.","Entrem no tempo."],
-  ["Let's try again.","Vamos tentar de novo."],
+const modules = {
+  "Equipe e ensaio": [
+    ["Let's rehearse from the top.","Vamos ensaiar do começo."],
+    ["Please check your timing.","Por favor, confiram o tempo."],
+    ["We need more precision.","Precisamos de mais precisão."],
+    ["Stay focused.","Permaneçam focados."],
+    ["Let's clean this part.","Vamos limpar esta parte."],
+    ["Watch the formation.","Observem a formação."],
+    ["Keep the line straight.","Mantenham a linha reta."],
+    ["Listen to the count.","Escutem a contagem."],
+    ["Enter on the beat.","Entrem no tempo."],
+    ["Let's try again.","Vamos tentar de novo."]
+  ],
 
-  ["Where is the costume?","Onde está o figurino?"],
-  ["The show starts in ten minutes.","O show começa em dez minutos."],
-  ["Please be ready backstage.","Por favor, estejam prontos na coxia."],
-  ["Check the microphone.","Verifiquem o microfone."],
-  ["Is the sound ready?","O som está pronto?"],
-  ["We need a quick change.","Precisamos de uma troca rápida."],
-  ["Call the dancers, please.","Chamem os dançarinos, por favor."],
-  ["Let's check the lights.","Vamos verificar as luzes."],
-  ["Everything is under control.","Está tudo sob controle."],
-  ["We are ready to start.","Estamos prontos para começar."],
+  "Camarim e produção": [
+    ["Where is the costume?","Onde está o figurino?"],
+    ["The show starts in ten minutes.","O show começa em dez minutos."],
+    ["Please be ready backstage.","Por favor, estejam prontos na coxia."],
+    ["Check the microphone.","Verifiquem o microfone."],
+    ["Is the sound ready?","O som está pronto?"],
+    ["We need a quick change.","Precisamos de uma troca rápida."],
+    ["Call the dancers, please.","Chamem os dançarinos, por favor."],
+    ["Let's check the lights.","Vamos verificar as luzes."],
+    ["Everything is under control.","Está tudo sob controle."],
+    ["We are ready to start.","Estamos prontos para começar."]
+  ],
 
-  ["Where is the hotel?","Onde fica o hotel?"],
-  ["I have a reservation.","Eu tenho uma reserva."],
-  ["What time is the soundcheck?","Que horas é a passagem de som?"],
-  ["Where is the dressing room?","Onde fica o camarim?"],
-  ["Can you help me with transportation?","Você pode me ajudar com o transporte?"],
-  ["What time do we leave?","Que horas nós saímos?"],
-  ["I need the event schedule.","Eu preciso do cronograma do evento."],
-  ["Where is the stage entrance?","Onde é a entrada do palco?"],
-  ["Who is the stage manager?","Quem é o gerente de palco?"],
-  ["Thank you for the invitation.","Obrigado pelo convite."],
+  "Viagem e eventos": [
+    ["Where is the hotel?","Onde fica o hotel?"],
+    ["I have a reservation.","Eu tenho uma reserva."],
+    ["What time is the soundcheck?","Que horas é a passagem de som?"],
+    ["Where is the dressing room?","Onde fica o camarim?"],
+    ["Can you help me with transportation?","Você pode me ajudar com o transporte?"],
+    ["What time do we leave?","Que horas nós saímos?"],
+    ["I need the event schedule.","Eu preciso do cronograma do evento."],
+    ["Where is the stage entrance?","Onde é a entrada do palco?"],
+    ["Who is the stage manager?","Quem é o gerente de palco?"],
+    ["Thank you for the invitation.","Obrigado pelo convite."]
+  ],
 
-  ["Thank you for your support.","Obrigado pelo apoio de vocês."],
-  ["You are amazing.","Vocês são incríveis."],
-  ["This song is for you.","Esta música é para vocês."],
-  ["Thank you for your energy.","Obrigado pela energia de vocês."],
-  ["I feel your love tonight.","Eu sinto o carinho de vocês esta noite."],
-  ["Let's celebrate together.","Vamos celebrar juntos."],
-  ["You make this night special.","Vocês tornam esta noite especial."],
-  ["Thank you for singing with me.","Obrigado por cantar comigo."],
-  ["I will never forget this moment.","Eu nunca vou esquecer este momento."],
-  ["See you again soon.","Vejo vocês novamente em breve."],
+  "Público e fãs": [
+    ["Thank you for your support.","Obrigado pelo apoio de vocês."],
+    ["You are amazing.","Vocês são incríveis."],
+    ["This song is for you.","Esta música é para vocês."],
+    ["Thank you for your energy.","Obrigado pela energia de vocês."],
+    ["I feel your love tonight.","Eu sinto o carinho de vocês esta noite."],
+    ["Let's celebrate together.","Vamos celebrar juntos."],
+    ["You make this night special.","Vocês tornam esta noite especial."],
+    ["Thank you for singing with me.","Obrigado por cantar comigo."],
+    ["I will never forget this moment.","Eu nunca vou esquecer este momento."],
+    ["See you again soon.","Vejo vocês novamente em breve."]
+  ],
 
-  ["This was an unforgettable night.","Esta foi uma noite inesquecível."],
-  ["Thank you from my heart.","Obrigado de coração."],
-  ["Have a wonderful night.","Tenham uma noite maravilhosa."],
-  ["Take care and stay inspired.","Cuidem-se e mantenham-se inspirados."],
-  ["Good night, everyone.","Boa noite, pessoal."],
-  ["See you at the next show.","Vejo vocês no próximo show."],
-  ["Thank you and good night.","Obrigado e boa noite."],
-  ["Keep dancing.","Continuem dançando."],
-  ["Keep believing in your dreams.","Continuem acreditando nos seus sonhos."],
-  ["See you next time.","Até a próxima."]
-];
+  "Encerramento": [
+    ["This was an unforgettable night.","Esta foi uma noite inesquecível."],
+    ["Thank you from my heart.","Obrigado de coração."],
+    ["Have a wonderful night.","Tenham uma noite maravilhosa."],
+    ["Take care and stay inspired.","Cuidem-se e mantenham-se inspirados."],
+    ["Good night, everyone.","Boa noite, pessoal."],
+    ["See you at the next show.","Vejo vocês no próximo show."],
+    ["Thank you and good night.","Obrigado e boa noite."],
+    ["Keep dancing.","Continuem dançando."],
+    ["Keep believing in your dreams.","Continuem acreditando nos seus sonhos."],
+    ["See you next time.","Até a próxima."]
+  ]
+};
 
+let moduleNames = Object.keys(modules);
+let currentModule = moduleNames[0];
+let phrases = modules[currentModule];
 let index = 0;
 let autoTraining = false;
 let training90 = false;
 let activeRecognition = null;
-let bestScoreValue = 0;
+let bestScores = {};
 
 const englishEl = document.getElementById("english");
 const portugueseEl = document.getElementById("portuguese");
@@ -465,6 +486,7 @@ const listEl = document.getElementById("list");
 const rateEl = document.getElementById("rate");
 const rateValueEl = document.getElementById("rateValue");
 const autoDelayEl = document.getElementById("autoDelay");
+const moduleSelect = document.getElementById("moduleSelect");
 
 document.getElementById("btnPrev").addEventListener("click", prevPhrase);
 document.getElementById("btnNext").addEventListener("click", nextPhrase);
@@ -474,6 +496,7 @@ document.getElementById("btnListen").addEventListener("click", listenAndScore);
 document.getElementById("btnAuto").addEventListener("click", autoTrain);
 document.getElementById("btnTrain90").addEventListener("click", trainUntil90);
 document.getElementById("btnStop").addEventListener("click", stopAll);
+moduleSelect.addEventListener("change", changeModule);
 
 rateEl.addEventListener("input", () => {
   rateValueEl.textContent = Number(rateEl.value).toFixed(2) + "x";
@@ -481,6 +504,28 @@ rateEl.addEventListener("input", () => {
 
 function setStatus(text){
   statusEl.textContent = "Status: " + text;
+}
+
+function populateModules(){
+  moduleSelect.innerHTML = "";
+  moduleNames.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    moduleSelect.appendChild(option);
+  });
+  moduleSelect.value = currentModule;
+}
+
+function changeModule(){
+  stopAll(false);
+  currentModule = moduleSelect.value;
+  phrases = modules[currentModule];
+  index = 0;
+  render();
+  clearScore();
+  updateBestScore();
+  setStatus("módulo alterado.");
 }
 
 function render(){
@@ -725,6 +770,11 @@ function buildWordFeedback(expected, spoken){
   return html;
 }
 
+function updateBestScore(){
+  const value = bestScores[currentModule] || 0;
+  bestScoreEl.textContent = value > 0 ? `Melhor pontuação: ${value}%` : "Melhor pontuação: --%";
+}
+
 function updateScore(score, spoken){
   heardEl.textContent = "Você disse: " + spoken;
   scoreEl.textContent = "Pronúncia: " + score + "%";
@@ -732,10 +782,10 @@ function updateScore(score, spoken){
   meterFill.style.width = score + "%";
   drawSpeedometer(score);
 
-  if(score > bestScoreValue){
-    bestScoreValue = score;
-    bestScoreEl.textContent = "Melhor pontuação: " + bestScoreValue + "%";
+  if(!bestScores[currentModule] || score > bestScores[currentModule]){
+    bestScores[currentModule] = score;
   }
+  updateBestScore();
 }
 
 function clearScore(){
@@ -884,11 +934,12 @@ function testSpeech(){
   });
 }
 
+populateModules();
 render();
 clearScore();
+updateBestScore();
 rateValueEl.textContent = Number(rateEl.value).toFixed(2) + "x";
 </script>
-<hr>
-<a href="index06.html">English for Stage</a>
+<a href="Licao.html">Back to lesson</a>
 </body>
 </html>
