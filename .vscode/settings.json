@@ -16,5 +16,6 @@
         "Unfortunately",
         "yourself"
     ],
-    "explorer.compactFolders": false
+    "explorer.compactFolders": false,
+    "liveServer.settings.port": 5501
 }

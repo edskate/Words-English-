@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>English for Stage PRO - EdyMichaelCover</title>
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --bg:#000;
+  --panel:#111;
+  --panel2:#181818;
+  --gold:#d4af37;
+  --gold2:#f3d97d;
+  --text:#fff;
+  --muted:#cfcfcf;
+  --ok:#6fe28f;
+  --bad:#ff7b7b;
+  --line:#433716;
+}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#000,#080808,#000);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  padding:20px;
+}
+
+.app{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.hero{
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  background:linear-gradient(180deg,#0c0c0c,#151515);
+  margin-bottom:18px;
+}
+
+.hero h1{
+  margin:0 0 8px;
+  color:var(--gold);
+}
+
+.hero p{
+  margin:0;
+  color:var(--muted);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px;
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+}
+
+.card h2{
+  margin-top:0;
+  color:var(--gold);
+}
+
+.phrase-box{
+  background:#0a0a0a;
+  border:1px solid #3c3114;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.counter{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#1d1706;
+  border:1px solid #5c4b19;
+  color:var(--gold2);
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+#english{
+  font-size:1.5rem;
+  line-height:1.5;
+  margin-bottom:10px;
+}
+
+#portuguese{
+  color:#d7d7d7;
+  line-height:1.5;
+}
+
+.toolbar{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.field{
+  background:var(--panel2);
+  border:1px solid #2a2a2a;
+  border-radius:12px;
+  padding:12px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--gold2);
+  font-weight:bold;
+}
+
+input[type="range"], input[type="number"]{
+  width:100%;
+}
+
+input[type="number"]{
+  background:#050505;
+  color:#fff;
+  border:1px solid #55471d;
+  border-radius:10px;
+  padding:10px 12px;
+}
+
+.range-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.badge{
+  min-width:70px;
+  text-align:center;
+  background:#1b1606;
+  border:1px solid #5c4b19;
+  color:var(--gold2);
+  border-radius:999px;
+  padding:8px 10px;
+  font-weight:bold;
+}
+
+.actions, .mini-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+button{
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  background:var(--gold);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.95;
+}
+
+.btn-dark{
+  background:#1f1f1f;
+  color:var(--gold);
+  border:1px solid var(--gold);
+}
+
+.btn-danger{
+  background:#ff7b7b;
+  color:#111;
+}
+
+.score-card{
+  margin-top:16px;
+  background:#0a0a0a;
+  border:1px solid #3d3316;
+  border-radius:14px;
+  padding:16px;
+}
+
+.meter{
+  width:100%;
+  height:22px;
+  background:#1c1c1c;
+  border-radius:999px;
+  border:1px solid #4d411d;
+  overflow:hidden;
+  margin:10px 0;
+}
+
+.meter-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#7a2222,#c4931d,#25964b);
+  transition:width .3s ease;
+}
+
+#speedometer{
+  display:block;
+  margin:14px auto 8px;
+  background:#090909;
+  border:1px solid #3e3417;
+  border-radius:12px;
+  max-width:100%;
+}
+
+#score{
+  font-size:1.1rem;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+#heard{
+  color:#ddd;
+  margin-top:8px;
+  min-height:24px;
+}
+
+#feedback{
+  margin-top:14px;
+  background:#0b0b0b;
+  border:1px solid #2c2c2c;
+  border-radius:12px;
+  padding:12px;
+  line-height:1.8;
+  min-height:58px;
+}
+
+.word-ok{
+  color:var(--ok);
+  font-weight:bold;
+}
+
+.word-bad{
+  color:var(--bad);
+  font-weight:bold;
+  text-decoration:underline;
+}
+
+.status{
+  margin-top:14px;
+  background:#0b0b0b;
+  border:1px solid #2f2f2f;
+  border-radius:12px;
+  padding:14px;
+  color:#ddd;
+}
+
+.list{
+  max-height:620px;
+  overflow:auto;
+  border:1px solid #2b2b2b;
+  border-radius:14px;
+  background:#0b0b0b;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  border-bottom:1px solid #1f1f1f;
+}
+
+.item:last-child{
+  border-bottom:none;
+}
+
+.item strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.item span{
+  color:#ccc;
+  font-size:.92rem;
+}
+
+.item-buttons{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.small{
+  padding:8px 10px;
+  font-size:.9rem;
+  border-radius:10px;
+}
+
+#bestScore{
+  color:var(--gold2);
+  font-weight:bold;
+}
+
+@media (max-width: 900px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .toolbar{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <h1>🎤 English for Stage PRO — EdyMichaelCover</h1>
+    <p>Treino de palco • pronúncia • velocímetro • ranking • estudo profissional</p>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Frase atual</h2>
+
+      <div class="phrase-box">
+        <div class="counter" id="counter">Frase 1 de 50</div>
+        <div id="english"></div>
+        <div id="portuguese"></div>
+
+        <div class="mini-actions" style="margin-top:14px;">
+          <button id="btnPrev" class="btn-dark">⬅ Anterior</button>
+          <button id="btnSpeak">🔊 Ouvir frase</button>
+          <button id="btnRepeat">🔁 Repetir 5x</button>
+          <button id="btnNext" class="btn-dark">Próxima ➡</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="field">
+          <label for="rate">Velocidade da voz</label>
+          <div class="range-row">
+            <input type="range" id="rate" min="0.5" max="1.8" step="0.1" value="0.95">
+            <div class="badge" id="rateValue">0.95x</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="autoDelay">Pausa no treino automático (segundos)</label>
+          <input type="number" id="autoDelay" min="1" max="10" value="2">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnListen">🎤 Testar pronúncia</button>
+        <button id="btnAuto">▶ Treino automático</button>
+        <button id="btnTrain90">🎯 Até 90%</button>
+        <button id="btnStop" class="btn-danger">⏹ Parar</button>
+      </div>
+
+      <div class="score-card">
+        <div>📊 Medidor de pronúncia</div>
+        <div id="heard">Você disse: —</div>
+
+        <div class="meter">
+          <div class="meter-fill" id="meterFill"></div>
+        </div>
+
+        <canvas id="speedometer" width="260" height="150"></canvas>
+
+        <div id="score">Pronúncia: --%</div>
+        <div id="bestScore">Melhor pontuação: --%</div>
+
+        <div id="feedback">Correção palavra por palavra: —</div>
+      </div>
+
+      <div class="status" id="status">Status: pronto para começar.</div>
+    </section>
+
+    <aside class="card">
+      <h2>Lista de frases</h2>
+      <div class="list" id="list"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const phrases = [
+  ["Let's rehearse from the top.","Vamos ensaiar do começo."],
+  ["Please check your timing.","Por favor, confiram o tempo."],
+  ["We need more precision.","Precisamos de mais precisão."],
+  ["Stay focused.","Permaneçam focados."],
+  ["Let's clean this part.","Vamos limpar esta parte."],
+  ["Watch the formation.","Observem a formação."],
+  ["Keep the line straight.","Mantenham a linha reta."],
+  ["Listen to the count.","Escutem a contagem."],
+  ["Enter on the beat.","Entrem no tempo."],
+  ["Let's try again.","Vamos tentar de novo."],
+
+  ["Where is the costume?","Onde está o figurino?"],
+  ["The show starts in ten minutes.","O show começa em dez minutos."],
+  ["Please be ready backstage.","Por favor, estejam prontos na coxia."],
+  ["Check the microphone.","Verifiquem o microfone."],
+  ["Is the sound ready?","O som está pronto?"],
+  ["We need a quick change.","Precisamos de uma troca rápida."],
+  ["Call the dancers, please.","Chamem os dançarinos, por favor."],
+  ["Let's check the lights.","Vamos verificar as luzes."],
+  ["Everything is under control.","Está tudo sob controle."],
+  ["We are ready to start.","Estamos prontos para começar."],
+
+  ["Where is the hotel?","Onde fica o hotel?"],
+  ["I have a reservation.","Eu tenho uma reserva."],
+  ["What time is the soundcheck?","Que horas é a passagem de som?"],
+  ["Where is the dressing room?","Onde fica o camarim?"],
+  ["Can you help me with transportation?","Você pode me ajudar com o transporte?"],
+  ["What time do we leave?","Que horas nós saímos?"],
+  ["I need the event schedule.","Eu preciso do cronograma do evento."],
+  ["Where is the stage entrance?","Onde é a entrada do palco?"],
+  ["Who is the stage manager?","Quem é o gerente de palco?"],
+  ["Thank you for the invitation.","Obrigado pelo convite."],
+
+  ["Thank you for your support.","Obrigado pelo apoio de vocês."],
+  ["You are amazing.","Vocês são incríveis."],
+  ["This song is for you.","Esta música é para vocês."],
+  ["Thank you for your energy.","Obrigado pela energia de vocês."],
+  ["I feel your love tonight.","Eu sinto o carinho de vocês esta noite."],
+  ["Let's celebrate together.","Vamos celebrar juntos."],
+  ["You make this night special.","Vocês tornam esta noite especial."],
+  ["Thank you for singing with me.","Obrigado por cantar comigo."],
+  ["I will never forget this moment.","Eu nunca vou esquecer este momento."],
+  ["See you again soon.","Vejo vocês novamente em breve."],
+
+  ["This was an unforgettable night.","Esta foi uma noite inesquecível."],
+  ["Thank you from my heart.","Obrigado de coração."],
+  ["Have a wonderful night.","Tenham uma noite maravilhosa."],
+  ["Take care and stay inspired.","Cuidem-se e mantenham-se inspirados."],
+  ["Good night, everyone.","Boa noite, pessoal."],
+  ["See you at the next show.","Vejo vocês no próximo show."],
+  ["Thank you and good night.","Obrigado e boa noite."],
+  ["Keep dancing.","Continuem dançando."],
+  ["Keep believing in your dreams.","Continuem acreditando nos seus sonhos."],
+  ["See you next time.","Até a próxima."]
+];
+
+let index = 0;
+let autoTraining = false;
+let training90 = false;
+let activeRecognition = null;
+let bestScoreValue = 0;
+
+const englishEl = document.getElementById("english");
+const portugueseEl = document.getElementById("portuguese");
+const counterEl = document.getElementById("counter");
+const heardEl = document.getElementById("heard");
+const scoreEl = document.getElementById("score");
+const bestScoreEl = document.getElementById("bestScore");
+const feedbackEl = document.getElementById("feedback");
+const meterFill = document.getElementById("meterFill");
+const statusEl = document.getElementById("status");
+const listEl = document.getElementById("list");
+const rateEl = document.getElementById("rate");
+const rateValueEl = document.getElementById("rateValue");
+const autoDelayEl = document.getElementById("autoDelay");
+
+document.getElementById("btnPrev").addEventListener("click", prevPhrase);
+document.getElementById("btnNext").addEventListener("click", nextPhrase);
+document.getElementById("btnSpeak").addEventListener("click", speakCurrent);
+document.getElementById("btnRepeat").addEventListener("click", () => repeatCurrent(5));
+document.getElementById("btnListen").addEventListener("click", listenAndScore);
+document.getElementById("btnAuto").addEventListener("click", autoTrain);
+document.getElementById("btnTrain90").addEventListener("click", trainUntil90);
+document.getElementById("btnStop").addEventListener("click", stopAll);
+
+rateEl.addEventListener("input", () => {
+  rateValueEl.textContent = Number(rateEl.value).toFixed(2) + "x";
+});
+
+function setStatus(text){
+  statusEl.textContent = "Status: " + text;
+}
+
+function render(){
+  englishEl.textContent = phrases[index][0];
+  portugueseEl.textContent = phrases[index][1];
+  counterEl.textContent = `Frase ${index + 1} de ${phrases.length}`;
+  renderList();
+}
+
+function renderList(){
+  listEl.innerHTML = "";
+
+  phrases.forEach((item, i) => {
+    const row = document.createElement("div");
+    row.className = "item";
+    if(i === index) row.style.background = "#121212";
+
+    const left = document.createElement("div");
+    left.innerHTML = `<strong>${i + 1}. ${escapeHtml(item[0])}</strong><span>${escapeHtml(item[1])}</span>`;
+
+    const right = document.createElement("div");
+    right.className = "item-buttons";
+
+    const openBtn = document.createElement("button");
+    openBtn.className = "small btn-dark";
+    openBtn.textContent = "Abrir";
+    openBtn.onclick = () => {
+      index = i;
+      render();
+      clearScore();
+      setStatus("frase carregada.");
+    };
+
+    const playBtn = document.createElement("button");
+    playBtn.className = "small";
+    playBtn.textContent = "🔊";
+    playBtn.onclick = () => {
+      index = i;
+      render();
+      speakCurrent();
+    };
+
+    right.appendChild(openBtn);
+    right.appendChild(playBtn);
+    row.appendChild(left);
+    row.appendChild(right);
+    listEl.appendChild(row);
+  });
+}
+
+function escapeHtml(text){
+  return text
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;");
+}
+
+function prevPhrase(){
+  stopSpeechOnly();
+  index = (index - 1 + phrases.length) % phrases.length;
+  render();
+  clearScore();
+  setStatus("frase anterior carregada.");
+}
+
+function nextPhrase(){
+  stopSpeechOnly();
+  index = (index + 1) % phrases.length;
+  render();
+  clearScore();
+  setStatus("próxima frase carregada.");
+}
+
+function buildUtterance(text){
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = Number(rateEl.value);
+  utter.pitch = 1;
+  utter.volume = 1;
+  return utter;
+}
+
+function speakText(text){
+  return new Promise((resolve) => {
+    stopSpeechOnly();
+    const utter = buildUtterance(text);
+
+    utter.onstart = () => setStatus("falando...");
+    utter.onend = () => resolve();
+    utter.onerror = () => {
+      setStatus("erro ao reproduzir a voz.");
+      resolve();
+    };
+
+    speechSynthesis.speak(utter);
+  });
+}
+
+async function speakCurrent(){
+  await speakText(phrases[index][0]);
+  setStatus("leitura concluída.");
+}
+
+async function repeatCurrent(times){
+  autoTraining = false;
+  training90 = false;
+  const text = phrases[index][0];
+  setStatus(`repetindo a frase ${times} vezes...`);
+
+  for(let i = 0; i < times; i++){
+    await speakText(text);
+    await wait(700);
+  }
+
+  setStatus("repetição finalizada.");
+}
+
+async function autoTrain(){
+  stopAll(false);
+  autoTraining = true;
+  setStatus("treino automático iniciado.");
+
+  for(let i = index; i < phrases.length; i++){
+    if(!autoTraining) break;
+    index = i;
+    render();
+    clearScore();
+    await speakText(phrases[i][0]);
+    await wait(Math.max(1, Number(autoDelayEl.value)) * 1000);
+  }
+
+  setStatus(autoTraining ? "treino automático concluído." : "treino automático interrompido.");
+  autoTraining = false;
+}
+
+async function trainUntil90(){
+  stopAll(false);
+  training90 = true;
+  let score = 0;
+  let attempts = 0;
+
+  setStatus("modo até 90% iniciado.");
+
+  while(training90 && score < 90){
+    attempts++;
+    setStatus(`tentativa ${attempts}: ouvindo a frase...`);
+    await speakCurrent();
+    await wait(900);
+    score = await testSpeech();
+    await wait(800);
+  }
+
+  if(training90 && score >= 90){
+    setStatus(`parabéns! você atingiu ${score}%.`);
+  } else {
+    setStatus("modo até 90% interrompido.");
+  }
+
+  training90 = false;
+}
+
+function stopSpeechOnly(){
+  speechSynthesis.cancel();
+}
+
+function stopAll(updateStatus = true){
+  autoTraining = false;
+  training90 = false;
+  stopSpeechOnly();
+
+  if(activeRecognition){
+    try { activeRecognition.stop(); } catch(e){}
+  }
+
+  if(updateStatus){
+    setStatus("tudo parado.");
+  }
+}
+
+function wait(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function normalizeText(text){
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function levenshtein(a, b){
+  const matrix = Array.from({ length: a.length + 1 }, () =>
+    new Array(b.length + 1).fill(0)
+  );
+
+  for(let i = 0; i <= a.length; i++) matrix[i][0] = i;
+  for(let j = 0; j <= b.length; j++) matrix[0][j] = j;
+
+  for(let i = 1; i <= a.length; i++){
+    for(let j = 1; j <= b.length; j++){
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost
+      );
+    }
+  }
+
+  return matrix[a.length][b.length];
+}
+
+function similarityPercent(expected, spoken){
+  const a = normalizeText(expected);
+  const b = normalizeText(spoken);
+
+  if(!a && !b) return 100;
+  if(!a || !b) return 0;
+
+  const distance = levenshtein(a, b);
+  const maxLen = Math.max(a.length, b.length);
+  return Math.max(0, Math.round((1 - distance / maxLen) * 100));
+}
+
+function buildWordFeedback(expected, spoken){
+  const exp = normalizeText(expected).split(" ").filter(Boolean);
+  const spk = normalizeText(spoken).split(" ").filter(Boolean);
+
+  if(!exp.length) return "Correção palavra por palavra: —";
+
+  let html = "Correção palavra por palavra:<br>";
+  for(let i = 0; i < exp.length; i++){
+    if(exp[i] === (spk[i] || "")){
+      html += `<span class="word-ok">${exp[i]}</span> `;
+    } else {
+      html += `<span class="word-bad">${exp[i]}</span> `;
+    }
+  }
+  return html;
+}
+
+function updateScore(score, spoken){
+  heardEl.textContent = "Você disse: " + spoken;
+  scoreEl.textContent = "Pronúncia: " + score + "%";
+  feedbackEl.innerHTML = buildWordFeedback(phrases[index][0], spoken);
+  meterFill.style.width = score + "%";
+  drawSpeedometer(score);
+
+  if(score > bestScoreValue){
+    bestScoreValue = score;
+    bestScoreEl.textContent = "Melhor pontuação: " + bestScoreValue + "%";
+  }
+}
+
+function clearScore(){
+  heardEl.textContent = "Você disse: —";
+  scoreEl.textContent = "Pronúncia: --%";
+  feedbackEl.textContent = "Correção palavra por palavra: —";
+  meterFill.style.width = "0%";
+  drawSpeedometer(0);
+}
+
+function drawSpeedometer(score){
+  const canvas = document.getElementById("speedometer");
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+  const cx = w / 2;
+  const cy = h - 18;
+  const radius = 92;
+
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.lineWidth = 14;
+  ctx.lineCap = "round";
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#2b2b2b";
+  ctx.arc(cx, cy, radius, Math.PI, 2 * Math.PI);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#8b2a2a";
+  ctx.arc(cx, cy, radius, Math.PI, Math.PI + Math.PI * 0.33);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#b98a1c";
+  ctx.arc(cx, cy, radius, Math.PI + Math.PI * 0.33, Math.PI + Math.PI * 0.66);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#2f9b4f";
+  ctx.arc(cx, cy, radius, Math.PI + Math.PI * 0.66, 2 * Math.PI);
+  ctx.stroke();
+
+  const angle = Math.PI + (score / 100) * Math.PI;
+  const nx = cx + Math.cos(angle) * 78;
+  const ny = cy + Math.sin(angle) * 78;
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#f3d97d";
+  ctx.lineWidth = 4;
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(nx, ny);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.fillStyle = "#f3d97d";
+  ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 24px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(score + "%", cx, 58);
+
+  ctx.fillStyle = "#cfcfcf";
+  ctx.font = "12px Arial";
+  ctx.fillText("Pronúncia", cx, 78);
+}
+
+function listenAndScore(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    setStatus("este navegador não suporta reconhecimento de fala. use Chrome ou Edge.");
+    return;
+  }
+
+  stopAll(false);
+
+  const recognition = new SpeechRecognition();
+  activeRecognition = recognition;
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  setStatus("ouvindo sua fala...");
+  heardEl.textContent = "Você disse: escutando...";
+  drawSpeedometer(0);
+  meterFill.style.width = "0%";
+
+  recognition.onresult = (event) => {
+    const spoken = event.results[0][0].transcript;
+    const score = similarityPercent(phrases[index][0], spoken);
+    updateScore(score, spoken);
+    setStatus("fala analisada.");
+  };
+
+  recognition.onerror = () => {
+    setStatus("não foi possível reconhecer sua fala agora.");
+  };
+
+  recognition.onend = () => {
+    activeRecognition = null;
+  };
+
+  recognition.start();
+}
+
+function testSpeech(){
+  return new Promise((resolve) => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition){
+      setStatus("este navegador não suporta reconhecimento de fala.");
+      resolve(0);
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    activeRecognition = recognition;
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setStatus("fale agora...");
+    heardEl.textContent = "Você disse: escutando...";
+
+    recognition.onresult = (event) => {
+      const spoken = event.results[0][0].transcript;
+      const score = similarityPercent(phrases[index][0], spoken);
+      updateScore(score, spoken);
+      resolve(score);
+    };
+
+    recognition.onerror = () => {
+      setStatus("erro ao ouvir sua fala.");
+      resolve(0);
+    };
+
+    recognition.onend = () => {
+      activeRecognition = null;
+    };
+
+    recognition.start();
+  });
+}
+
+render();
+clearScore();
+rateValueEl.textContent = Number(rateEl.value).toFixed(2) + "x";
+</script>
+</body>
+</html>
